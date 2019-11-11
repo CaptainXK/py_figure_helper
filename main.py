@@ -21,7 +21,7 @@ class Config_Var:
 class Reg_Helper:
     @staticmethod #static funtion
     def do_search(string):
-        #match pattern like [asdasd,asdasdas]
+        #match pattern like [file_path,legend_name]
         resOBJ = re.search(r'\[(.+),(.+)\]', 
                             string)
         
