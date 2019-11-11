@@ -11,14 +11,14 @@ def cal_one_file(file_path):
 
 def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file):
     #refresh plt
-    plt.figure()
+    plt.figure(figsize=(6, 4))
 
     #get max y value
     y_max = max(ylists[0])
     if y_max <= max(ylists[1]):
         y_max = max(ylists[1])
 
-    plt.ylim(0, y_max + (y_max / 10) )
+    plt.ylim(0, y_max + (y_max / 10))
 
     #create
     plt.title(title)
@@ -26,9 +26,10 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file):
     plt.ylabel(ylabel)
 
     #draw
-    line_style=['-.', ':', '--', '-']
-    for (cur_ylist, cur_label, cur_ls) in zip(ylists, labels, line_style):
-        plt.plot(xlist, cur_ylist, label=cur_label, linestyle=cur_ls)
+    # line_style=['-.', ':', '--', '-']
+    markers=['o','^','v']
+    for (cur_ylist, cur_label, cur_marker) in zip(ylists, labels, markers):
+        plt.plot(xlist, cur_ylist, label=cur_label, linestyle='-', marker=cur_marker, markerfacecolor='none')
     # plt.plot(xlist, ylists[0], label=labels[0])
     # plt.plot(xlist, ylists[1], label=labels[1])
 
