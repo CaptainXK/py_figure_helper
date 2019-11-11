@@ -93,6 +93,7 @@ class Cmd_Helper:
 
             elif opt == '-h':
                 self.__usage__()
+                exit(0)
 
             else:
                 self.__error_out()
