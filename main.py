@@ -44,7 +44,7 @@ class Cmd_Helper:
         print("\t-t:\t target figure file")
         print("\t--xlabel=, --ylabel=, --title=\t:content of xlabel, ylabel and title")
         print("\t--type : bar, plot")
-        print("\texample\t:python create_fig.py -d [data1,met1]:[data2,met2] -t out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\" --type=plot")
+        print("\tExample\t:\n\t\tpython create_fig.py -d [data1,met1]:[data2,met2] -t out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\" --type=plot")
         return
 
     def __parse_cmd__(self, argv, cfg):
