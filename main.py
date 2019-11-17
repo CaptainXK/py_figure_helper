@@ -16,6 +16,7 @@ class Config_Var:
     names_list = []
     title = 'test'
     target_file = "out.png"
+    type = 'bar'
 
 'parse regex in cmd to get data file\'s name and path'
 class Reg_Helper:
@@ -42,12 +43,13 @@ class Cmd_Helper:
         print("\t-d:\t source data file and name, file will be used as data source file path, name will be used as figure label, form is look as [file, name]:[file1,name1]")
         print("\t-t:\t target figure file")
         print("\t--xlabel=, --ylabel=, --title=\t:content of xlabel, ylabel and title")
-        print("\texample\t:python create_fig.py -d [data1,met1]:[data2,met2] -t out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\"")
+        print("\t--type : bar, plot")
+        print("\texample\t:python create_fig.py -d [data1,met1]:[data2,met2] -t out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\" --type=plot")
         return
 
     def __parse_cmd__(self, argv, cfg):
         try:
-            opts, args = getopt.getopt(argv, "d:t:h", ["xlabel=", "ylabel=", "title="])
+            opts, args = getopt.getopt(argv, "d:t:h", ["xlabel=", "ylabel=", "title=", "type="])
         except getopt.GetoptError as err:
             print("Error:"+str(err))
             self.__usage__()
@@ -72,7 +74,7 @@ class Cmd_Helper:
                         data_list_temp = []
                         with open(res[0], mode='r') as file:
                             for item in file.readlines():
-                                data_list_temp.append(int(item))
+                                data_list_temp.append(float(item.replace('\n','')))
                         # print(data_list_temp)
 
                         cfg.datas_list.append(data_list_temp)
@@ -90,6 +92,9 @@ class Cmd_Helper:
 
             elif opt == '--title':
                 cfg.title = arg
+            
+            elif opt == '--type':
+                cfg.type = arg
 
             elif opt == '-h':
                 self.__usage__()
@@ -114,13 +119,14 @@ class __main__():
             print("file '%s' is labeled as '%s'"%(file_name, name))
 
         dfc.create_fig(plt, 
-                       range(1, cfg.nb_data+1, 1), 
+                       list(range(1, cfg.nb_data+1, 1)), 
                        cfg.datas_list, 
                        cfg.xlabel,
                        cfg.ylabel,
                        cfg.title,
                        cfg.names_list,
-                       cfg.target_file)
+                       cfg.target_file,
+                       cfg.type)
 
         del cfg
         del parser
