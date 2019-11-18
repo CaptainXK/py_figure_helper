@@ -1,0 +1,8 @@
+{
+    "data_files":"mem_pbs.csv, mem_cbs.csv, mem_nametrie.csv",
+    "data_names":"pbs, cbs, nametrie",
+    "xlabel":"data set",
+    "ylabel":"Memory footprint(MB)",
+    "type":"bar",
+    "out":"mem.pdf"
+}

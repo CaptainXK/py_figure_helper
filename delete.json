@@ -1,0 +1,8 @@
+{
+    "data_files":"delete_pbs.csv, delete_cbs.csv, delete_nametrie.csv",
+    "data_names":"pbs, cbs, nametrie",
+    "xlabel":"data set",
+    "ylabel":"Speed(MNPS)",
+    "type":"bar",
+    "out":"delete.pdf"
+}
