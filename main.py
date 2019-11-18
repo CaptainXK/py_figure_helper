@@ -81,19 +81,19 @@ class Cmd_Helper:
                 for name in names_list:
                     cfg.names_list.append(name.replace(' ',''))
 
-            elif key == '--out':
+            elif key == 'out':
                 cfg.target_file = data_dict[key]
 
-            elif key == '--xlabel':
+            elif key == 'xlabel':
                 cfg.xlabel = data_dict[key]
 
-            elif key == '--ylabel':
+            elif key == 'ylabel':
                 cfg.ylabel = data_dict[key]
 
-            elif key == '--title':
+            elif key == 'title':
                 cfg.title = data_dict[key]
             
-            elif key == '--type':
+            elif key == 'type':
                 cfg.type = data_dict[key]
 
     def __parse_cmd__(self, argv, cfg):
