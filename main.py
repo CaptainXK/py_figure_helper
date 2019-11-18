@@ -39,7 +39,7 @@ class Cmd_Helper:
         print("Please use -h to get usage")
 
     def __usage__(self):
-        print("usage:")
+        print("Usage:")
         print("\t-d:\t source data file and name, file will be used as data source file path, name will be used as figure label, form is look as [file, name]:[file1,name1]")
         print("\t-t:\t target figure file")
         print("\t--xlabel=, --ylabel=, --title=\t:content of xlabel, ylabel and title")
