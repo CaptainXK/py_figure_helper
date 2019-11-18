@@ -11,19 +11,21 @@ def cal_one_file(file_path):
 
 def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type):
     #refresh plt
-    plt.figure(figsize=(6, 4))
+    fig = plt.figure(figsize=(6, 4))
+    ax = fig.add_subplot(111)
 
     #get max y value
     y_max = max(ylists[0])
     if y_max <= max(ylists[1]):
         y_max = max(ylists[1])
 
-    plt.ylim(0, y_max + (y_max / 10))
+    plt.ylim(0, y_max + (y_max / 3))
 
     #create
     plt.title(title)
     plt.xlabel(xlable)
     plt.ylabel(ylabel)
+
 
     #draw
     # line_style=['-.', ':', '--', '-']
@@ -36,11 +38,23 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     else:
         tot_width, n = 0.9,3
         _width = tot_width / n
-        patterns=['///','xxx','\\\\\\']
-        for (cur_ylist, cur_label, pattern) in zip(ylists, labels, patterns):
-            plt.bar(xlist, cur_ylist, width=_width, label=cur_label, hatch=pattern)
+        patterns = ['///','+++','xxx']
+        offsets = [-1, 0, 1]
+        cur_xlist = list(range(len(xlist)))
+        for (cur_ylist, cur_label, pattern, offset) in zip(ylists, labels, patterns, offsets):
+            # set offset of each bar
             for x in range(len(xlist)):
-                xlist[x] += _width
+                cur_xlist[x] = xlist[x] + offset * _width
+            plt.bar(cur_xlist, cur_ylist, width=_width, label=cur_label, hatch=pattern)
+        
+        # set ticks and labels of x-axis
+        xlabels = []
+        for i in range(6):
+            xlabels.append("reddit_{}".format(i))
+        ax.set_xticks(range(6))
+        ax.set_xticklabels(xlabels)
+        
+
 
 
     plt.legend()#print the label for each data line

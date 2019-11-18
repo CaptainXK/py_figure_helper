@@ -4,6 +4,7 @@ import data_file_cal as dfc
 import sys, getopt
 import re # regex
 import traceback
+import json
 
 'global var'
 class Config_Var:
@@ -14,7 +15,7 @@ class Config_Var:
     files_list = []
     datas_list = []
     names_list = []
-    title = 'test'
+    title = ''
     target_file = "out.png"
     type = 'bar'
 
@@ -40,16 +41,64 @@ class Cmd_Helper:
 
     def __usage__(self):
         print("Usage:")
-        print("\t-d:\t source data file and name, file will be used as data source file path, name will be used as figure label, form is look as [file, name]:[file1,name1]")
-        print("\t-t:\t target figure file")
+        print("\t--data_files:\t source data file and name, file will be used as data source file path, name will be used as figure label, form is look as [file, name]:[file1,name1]")
+        print("\t--out:\t target figure file")
         print("\t--xlabel=, --ylabel=, --title=\t:content of xlabel, ylabel and title")
         print("\t--type : bar, plot")
-        print("\tExample\t:\n\t\tpython create_fig.py -d [data1,met1]:[data2,met2] -t out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\" --type=plot")
+        print("\t--json : json file cantaining figure setup")
+        print("\tExample\t:\n\t\tpython create_fig.py --data_files [data1,met1]:[data2,met2] --out out.png --xlabel=rounds --ylabel=\"value(ms)\" --title=\"name empty\" --type=plot")
+        print("\tExample\t:\n\t\tpython create_fig.py --json=insert.json")
         return
+
+    def parse_json(self, json_path, cfg):
+        data_dict={}
+
+        with open(json_path, 'r') as f_in:
+            data_dict = json.load(f_in)
+            # data_dict = json.dumps(raw_json_data)
+            # data_dict = json.loads(str(raw_json_data))
+
+        print("Json dict:")
+        print(data_dict)
+
+        for key in data_dict.keys():
+            if key == "data_files":
+                files_list = data_dict[key].split(',')
+                for file in files_list:
+                    cfg.files_list.append(file.replace(' ',''))
+                    data_list_temp = []
+                    with open(file.replace(' ',''), 'r') as fp_data_in:
+                        for item in fp_data_in.readlines():
+                            data_list_temp.append(float(item.replace('\n','')))
+                    
+                    cfg.datas_list.append(data_list_temp)
+                    
+                cfg.nb_data = len(cfg.datas_list[0])
+
+
+            elif key == "data_names":
+                names_list = data_dict[key].split(',')
+                for name in names_list:
+                    cfg.names_list.append(name.replace(' ',''))
+
+            elif key == '--out':
+                cfg.target_file = data_dict[key]
+
+            elif key == '--xlabel':
+                cfg.xlabel = data_dict[key]
+
+            elif key == '--ylabel':
+                cfg.ylabel = data_dict[key]
+
+            elif key == '--title':
+                cfg.title = data_dict[key]
+            
+            elif key == '--type':
+                cfg.type = data_dict[key]
 
     def __parse_cmd__(self, argv, cfg):
         try:
-            opts, args = getopt.getopt(argv, "d:t:h", ["xlabel=", "ylabel=", "title=", "type="])
+            opts, args = getopt.getopt(argv, "h", ["data_files=","out=","xlabel=", "ylabel=", "title=", "type=", "json="])
         except getopt.GetoptError as err:
             print("Error:"+str(err))
             self.__usage__()
@@ -61,7 +110,12 @@ class Cmd_Helper:
             return
 
         for opt, arg in opts:
-            if opt == '-d':
+            if opt == '--json':
+                print("Read figure setup from json file {}".format(arg))
+                self.parse_json(arg, cfg)
+                return
+            
+            elif opt == '--data_files':
                 'form : (file, label)'
                 print(arg)
                 for data_tuple in arg.split(":"):
@@ -81,7 +135,7 @@ class Cmd_Helper:
 
                 cfg.nb_data = len(cfg.datas_list[0])
 
-            elif opt == '-t':
+            elif opt == '--out':
                 cfg.target_file = arg
 
             elif opt == '--xlabel':
@@ -110,6 +164,8 @@ class __main__():
         cfg = Config_Var()
         parser = Cmd_Helper()
 
+        print("argv:" + str(sys.argv[0:]))
+
         parser.__parse_cmd__(sys.argv[1:], cfg)
 
         # print(cfg.datas_list)
@@ -119,7 +175,7 @@ class __main__():
             print("file '%s' is labeled as '%s'"%(file_name, name))
 
         dfc.create_fig(plt, 
-                       list(range(1, cfg.nb_data+1, 1)), 
+                       list(range(0, cfg.nb_data, 1)), 
                        cfg.datas_list, 
                        cfg.xlabel,
                        cfg.ylabel,
@@ -130,7 +186,6 @@ class __main__():
 
         del cfg
         del parser
-
 
 #start here
 test = __main__()
