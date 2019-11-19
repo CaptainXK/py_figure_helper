@@ -5,6 +5,7 @@ import sys, getopt
 import re # regex
 import traceback
 import json
+import os
 
 'global var'
 class Config_Var:
@@ -177,6 +178,12 @@ class Cmd_Helper:
                 
                 cfg.datas_list.append(data_list_temp)
         cfg.nb_data = len(cfg.datas_list[0])
+
+        # perpare dirs
+        if os.path.isdir(cfg.dir) is not True:
+            os.mkdir(cfg.dir)
+        if os.path.isdir("figures") is not True:
+            os.mkdir("figures")
 
 'main api class'
 class __main__():
