@@ -1,0 +1,10 @@
+{
+    "dir":"figure_src",
+    "data_files":"multi_pbs.csv, multi_cbs.csv",
+    "data_names":"pbs, cbs",
+    "xlabel":"# of candidate slots",
+    "xlabels":"3,8,1",
+    "ylabel":"Speed(MNPS)",
+    "type":"plot",
+    "out":"multi_slots.pdf"
+}

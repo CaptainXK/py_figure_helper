@@ -10,6 +10,7 @@ import os
 'global var'
 class Config_Var:
     xlabel='x'
+    xlabels = []
     ylabel='y'
     nb_file = 0
     nb_data = 0
@@ -23,6 +24,7 @@ class Config_Var:
 
     def __init__(self):
         self.xlabel='x'
+        xlabels = []
         self.ylabel='y'
         self.nb_file = 0
         self.nb_data = 0
@@ -93,6 +95,11 @@ class Cmd_Helper:
 
             elif key == 'xlabel':
                 cfg.xlabel = data_dict[key]
+
+            elif key == 'xlabels':
+                xlabels_list = str(data_dict[key]).split(',')
+                for _xlabel in xlabels_list:
+                    cfg.xlabels.append(int(_xlabel.strip()))
 
             elif key == 'ylabel':
                 cfg.ylabel = data_dict[key]
@@ -183,19 +190,14 @@ class Cmd_Helper:
             os.mkdir("figures")
 
 'main api class'
-class __main__():
+class Figure_helper():
 
     def __init__(self, cmd=''):
         cfg = Config_Var()
         parser = Cmd_Helper()
 
-        # print("argv:" + str(sys.argv[0:]))
-        if cmd == '':
-            print("Configure by cmd")
-            parser.__parse_cmd__(sys.argv[1:], cfg)
-        else:
-            print("Configure by list:" + str(cmd) )
-            parser.__parse_cmd__(cmd, cfg)
+        print("Configure by list:" + str(cmd) )
+        parser.__parse_cmd__(cmd, cfg)
 
         # print(cfg.datas_list)
 
@@ -203,8 +205,14 @@ class __main__():
         for file_name, name in zip(cfg.files_list, cfg.names_list):
             print("file '%s' is labeled as '%s'"%(file_name, name))
 
+        xlist = []
+        if len(cfg.xlabels) == 0:
+            xlist = range(0, cfg.nb_data, 1)
+        else:
+            xlist = range(cfg.xlabels[0], cfg.xlabels[1] + 1, cfg.xlabels[2])
+
         dfc.create_fig(plt, 
-                       list(range(0, cfg.nb_data, 1)), 
+                       xlist, 
                        cfg.datas_list, 
                        cfg.xlabel,
                        cfg.ylabel,
@@ -212,13 +220,19 @@ class __main__():
                        cfg.names_list,
                        cfg.target_file,
                        cfg.type)
-
         del cfg
         del parser
 
-#start here
-cmd_list=[['--json=lookup.json'], ['--json=insert.json'], ['--json=delete.json'], ['--json=mem.json']]
-for cmd in cmd_list:
-    test = __main__(cmd)
-    del test
+def __main__():
+    if len(sys.argv) == 1:
+        cmd_list=[['--json=lookup.json'], ['--json=insert.json'], ['--json=delete.json'], ['--json=mem.json']]
+        for cmd in cmd_list:
+            test = Figure_helper(cmd)
+            del test
+    else:
+        test = Figure_helper(sys.argv[1:])
+        del test
+
+# start here
+__main__()
 
