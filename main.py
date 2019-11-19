@@ -69,14 +69,6 @@ class Cmd_Helper:
                 for file in files_list:
                     cfg.files_list.append(file.replace(' ',''))
                     data_list_temp = []
-                #     with open(file.replace(' ',''), 'r') as fp_data_in:
-                #         for item in fp_data_in.readlines():
-                #             data_list_temp.append(float(item.replace('\n','')))
-                    
-                #     cfg.datas_list.append(data_list_temp)
-                    
-                # cfg.nb_data = len(cfg.datas_list[0])
-
 
             elif key == "data_names":
                 names_list = data_dict[key].split(',')
@@ -134,14 +126,6 @@ class Cmd_Helper:
                         cfg.files_list.append(res[0])
                         cfg.names_list.append(res[1])
                         data_list_temp = []
-                #         with open(res[0], mode='r') as file:
-                #             for item in file.readlines():
-                #                 data_list_temp.append(float(item.replace('\n','')))
-                #         # print(data_list_temp)
-
-                #         cfg.datas_list.append(data_list_temp)
-
-                # cfg.nb_data = len(cfg.datas_list[0])
 
             elif opt == '--out':
                 cfg.target_file = arg
