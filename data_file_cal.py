@@ -26,7 +26,6 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     plt.xlabel(xlable)
     plt.ylabel(ylabel)
 
-
     #draw
     # line_style=['-.', ':', '--', '-']
     if type == 'plot':
@@ -54,13 +53,10 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
         ax.set_xticks(range(6))
         ax.set_xticklabels(xlabels)
         
-
-
-
     plt.legend()#print the label for each data line
 
     # plt.show()
 
-    plt.savefig(tar_file)
+    plt.savefig("{}/{}".format("figures", tar_file))
 
     print(tar_file + " had been created")

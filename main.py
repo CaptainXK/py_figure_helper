@@ -18,6 +18,7 @@ class Config_Var:
     title = ''
     target_file = "out.png"
     type = 'bar'
+    dir = ''
 
 'parse regex in cmd to get data file\'s name and path'
 class Reg_Helper:
@@ -67,13 +68,13 @@ class Cmd_Helper:
                 for file in files_list:
                     cfg.files_list.append(file.replace(' ',''))
                     data_list_temp = []
-                    with open(file.replace(' ',''), 'r') as fp_data_in:
-                        for item in fp_data_in.readlines():
-                            data_list_temp.append(float(item.replace('\n','')))
+                #     with open(file.replace(' ',''), 'r') as fp_data_in:
+                #         for item in fp_data_in.readlines():
+                #             data_list_temp.append(float(item.replace('\n','')))
                     
-                    cfg.datas_list.append(data_list_temp)
+                #     cfg.datas_list.append(data_list_temp)
                     
-                cfg.nb_data = len(cfg.datas_list[0])
+                # cfg.nb_data = len(cfg.datas_list[0])
 
 
             elif key == "data_names":
@@ -96,9 +97,16 @@ class Cmd_Helper:
             elif key == 'type':
                 cfg.type = data_dict[key]
 
+            elif key == 'dir':
+                cfg.dir = data_dict[key]
+            
+            else:
+                self.__err_out()
+                sys.exit(0)
+
     def __parse_cmd__(self, argv, cfg):
         try:
-            opts, args = getopt.getopt(argv, "h", ["data_files=","out=","xlabel=", "ylabel=", "title=", "type=", "json="])
+            opts, args = getopt.getopt(argv, "h", ["data_files=","out=","xlabel=", "ylabel=", "title=", "type=", "dir=","json="])
         except getopt.GetoptError as err:
             print("Error:"+str(err))
             self.__usage__()
@@ -113,7 +121,6 @@ class Cmd_Helper:
             if opt == '--json':
                 print("Read figure setup from json file {}".format(arg))
                 self.parse_json(arg, cfg)
-                return
             
             elif opt == '--data_files':
                 'form : (file, label)'
@@ -126,14 +133,14 @@ class Cmd_Helper:
                         cfg.files_list.append(res[0])
                         cfg.names_list.append(res[1])
                         data_list_temp = []
-                        with open(res[0], mode='r') as file:
-                            for item in file.readlines():
-                                data_list_temp.append(float(item.replace('\n','')))
-                        # print(data_list_temp)
+                #         with open(res[0], mode='r') as file:
+                #             for item in file.readlines():
+                #                 data_list_temp.append(float(item.replace('\n','')))
+                #         # print(data_list_temp)
 
-                        cfg.datas_list.append(data_list_temp)
+                #         cfg.datas_list.append(data_list_temp)
 
-                cfg.nb_data = len(cfg.datas_list[0])
+                # cfg.nb_data = len(cfg.datas_list[0])
 
             elif opt == '--out':
                 cfg.target_file = arg
@@ -150,12 +157,26 @@ class Cmd_Helper:
             elif opt == '--type':
                 cfg.type = arg
 
+            elif opt == 'dir':
+                cfg.dir = arg
+
             elif opt == '-h':
                 self.__usage__()
                 exit(0)
 
             else:
                 self.__error_out()
+                sys.exit(0)
+        
+        # read datas from files list
+        for file in cfg.files_list:
+            data_list_temp = []
+            with open("{}/{}".format(cfg.dir, file), 'r') as fp_in:
+                for item in fp_in.readlines():
+                    data_list_temp.append(float(item.replace('\n','')))
+                
+                cfg.datas_list.append(data_list_temp)
+        cfg.nb_data = len(cfg.datas_list[0])
 
 'main api class'
 class __main__():
