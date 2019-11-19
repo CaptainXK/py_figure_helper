@@ -37,7 +37,7 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     else:
         tot_width, n = 0.9,3
         _width = tot_width / n
-        patterns = ['///','+++','xxx']
+        patterns = ['','///','xxx']
         offsets = [-1, 0, 1]
         cur_xlist = list(range(len(xlist)))
         for (cur_ylist, cur_label, pattern, offset) in zip(ylists, labels, patterns, offsets):
