@@ -13,7 +13,7 @@ def cal_one_file(file_path):
 
 def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type):
     # prepare pdf backend
-    pdf = PdfPages("{}/{}".format("figures", tar_file))
+    # pdf = PdfPages("{}/{}".format("figures", tar_file))
 
     #refresh plt
     fig = plt.figure(figsize=(6, 4))
@@ -42,14 +42,14 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     else:
         tot_width, n = 0.9,3
         _width = tot_width / n
-        patterns = ['','xxx','---']
+        patterns = ['','\\\\\\','///']
         offsets = [-1, 0, 1]
         cur_xlist = list(range(len(xlist)))
         for (cur_ylist, cur_label, pattern, offset) in zip(ylists, labels, patterns, offsets):
             # set offset of each bar
             for x in range(len(xlist)):
                 cur_xlist[x] = xlist[x] + offset * _width
-            plt.bar(cur_xlist, cur_ylist, width=_width, label=cur_label, hatch=pattern)
+            plt.bar(cur_xlist, cur_ylist, width=_width, label=cur_label, hatch=pattern, alpha=1)
         
         # set ticks and labels of x-axis
         xlabels = []
@@ -59,15 +59,16 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
         ax.set_xticklabels(xlabels)
         
     plt.legend()#print the label for each data line
+    plt.tight_layout()
 
     # plt.show()
-    # plt.savefig("{}/{}".format("figures", tar_file))
+    plt.savefig("{}/{}".format("figures", tar_file), bbox_inches='tight')
 
     # save pdf
-    pdf.savefig()
+    # pdf.savefig()
 
     # close pdf and plt
     plt.close()
-    pdf.close()
+    # pdf.close()
 
     print(tar_file + " had been created")
