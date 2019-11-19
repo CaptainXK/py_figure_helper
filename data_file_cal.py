@@ -1,3 +1,5 @@
+from matplotlib.backends.backend_pdf import PdfPages
+
 def cal_one_file(file_path):
     file = open(file_path, mode='r')
     lines = file.readlines()
@@ -10,6 +12,9 @@ def cal_one_file(file_path):
     return float(res) / len(lines)
 
 def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type):
+    # prepare pdf backend
+    pdf = PdfPages("{}/{}".format("figures", tar_file))
+
     #refresh plt
     fig = plt.figure(figsize=(6, 4))
     ax = fig.add_subplot(111)
@@ -37,7 +42,7 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     else:
         tot_width, n = 0.9,3
         _width = tot_width / n
-        patterns = ['','///','xxx']
+        patterns = ['','xxx','---']
         offsets = [-1, 0, 1]
         cur_xlist = list(range(len(xlist)))
         for (cur_ylist, cur_label, pattern, offset) in zip(ylists, labels, patterns, offsets):
@@ -56,7 +61,13 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     plt.legend()#print the label for each data line
 
     # plt.show()
+    # plt.savefig("{}/{}".format("figures", tar_file))
 
-    plt.savefig("{}/{}".format("figures", tar_file))
+    # save pdf
+    pdf.savefig()
+
+    # close pdf and plt
+    plt.close()
+    pdf.close()
 
     print(tar_file + " had been created")

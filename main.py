@@ -21,6 +21,19 @@ class Config_Var:
     type = 'bar'
     dir = ''
 
+    def __init__(self):
+        self.xlabel='x'
+        self.ylabel='y'
+        self.nb_file = 0
+        self.nb_data = 0
+        self.files_list = []
+        self.datas_list = []
+        self.names_list = []
+        self.title = ''
+        self.target_file = "out.png"
+        self.type = 'bar'
+        self.dir = ''
+
 'parse regex in cmd to get data file\'s name and path'
 class Reg_Helper:
     @staticmethod #static funtion
@@ -60,8 +73,8 @@ class Cmd_Helper:
             # data_dict = json.dumps(raw_json_data)
             # data_dict = json.loads(str(raw_json_data))
 
-        print("Json dict:")
-        print(data_dict)
+        # print("Json dict:")
+        # print(data_dict)
 
         for key in data_dict.keys():
             if key == "data_files":
@@ -172,13 +185,17 @@ class Cmd_Helper:
 'main api class'
 class __main__():
 
-    def __init__(self):
+    def __init__(self, cmd=''):
         cfg = Config_Var()
         parser = Cmd_Helper()
 
-        print("argv:" + str(sys.argv[0:]))
-
-        parser.__parse_cmd__(sys.argv[1:], cfg)
+        # print("argv:" + str(sys.argv[0:]))
+        if cmd == '':
+            print("Configure by cmd")
+            parser.__parse_cmd__(sys.argv[1:], cfg)
+        else:
+            print("Configure by list:" + str(cmd) )
+            parser.__parse_cmd__(cmd, cfg)
 
         # print(cfg.datas_list)
 
@@ -200,6 +217,8 @@ class __main__():
         del parser
 
 #start here
-test = __main__()
-del test
+cmd_list=[['--json=lookup.json'], ['--json=insert.json'], ['--json=delete.json'], ['--json=mem.json']]
+for cmd in cmd_list:
+    test = __main__(cmd)
+    del test
 
