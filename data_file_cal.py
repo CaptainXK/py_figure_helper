@@ -41,7 +41,10 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
     if type == 'plot':
         markers=['o','^','v']
         for (cur_ylist, cur_label, cur_marker) in zip(ylists, labels, markers):
-            plt.plot(xlist, cur_ylist[:len(xlist)], label=cur_label, linestyle='-', marker=cur_marker, markerfacecolor='none')
+            plt.plot(xlist, cur_ylist, label=cur_label, linestyle='-', marker=cur_marker, markerfacecolor='none')
+        plt.xticks(xlist)
+        # plt.plot(xlist, ylists[0], label=labels[0])
+        # plt.plot(xlist, ylists[1], label=labels[1])
     else:
         tot_width, n = 0.9, len(labels)
         _width = tot_width / n
