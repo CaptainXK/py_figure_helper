@@ -1,0 +1,10 @@
+{
+    "dir":"figure_src",
+    "data_files":"statistic.csv",
+    "data_names":"",
+    "xlabel":"# of components",
+    "xlabels":"1,18,1",
+    "ylabel":"# of prefixes",
+    "type":"bar",
+    "out":"statistic.pdf"
+}
