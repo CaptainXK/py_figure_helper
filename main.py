@@ -212,14 +212,14 @@ class Figure_helper():
             xlist = range(cfg.xlabels[0], cfg.xlabels[1] + 1, cfg.xlabels[2])
 
         dfc.create_fig(plt, 
-                       xlist, 
-                       cfg.datas_list, 
-                       cfg.xlabel,
-                       cfg.ylabel,
-                       cfg.title,
-                       cfg.names_list,
-                       cfg.target_file,
-                       cfg.type)
+                        xlist, 
+                        cfg.datas_list, 
+                        cfg.xlabel,
+                        cfg.ylabel,
+                        cfg.title,
+                        cfg.names_list,
+                        cfg.target_file,
+                        cfg.type)
         del cfg
         del parser
 
