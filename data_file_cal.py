@@ -59,10 +59,10 @@ def create_fig(plt, xlist, ylists, xlable, ylabel, title, labels, tar_file, type
         
         # set ticks and labels of x-axis
         xlabels = []
-        for i in range(0, len(xlist), 2):
-            # xlabels.append("reddit_{}".format(i))
-            xlabels.append("{}".format(i+1))
-        ax.set_xticks(range(1, len(xlist)+1, 2))
+        for i in range(0, len(xlist), 1):
+            xlabels.append("reddit_{}".format(i))
+            # xlabels.append("{}".format(i))
+        ax.set_xticks(range(0, len(xlist), 1))
         ax.set_xticklabels(xlabels)
     
     plt.legend()#print the label for each data line
