@@ -1,0 +1,9 @@
+{
+    "dir":"figure_src",
+    "data_files":"lookup_pbs.csv, lookup_cbs.csv, lookup_nametrie.csv",
+    "data_names":"pbs, cbs, nametrie",
+    "xlabel":"data set (reddit#)",
+    "ylabel":"Speed(MNPS)",
+    "type":"bar",
+    "out":"lookup.png"
+}
